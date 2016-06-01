@@ -1,7 +1,8 @@
-﻿
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include "color.h"
 
 
 /* Term Project for SE420 - 2015-2016 Spring
@@ -130,6 +131,8 @@ bool IsOkay(int Sudoku[Size][Size], int row, int col, int num)
 /* A utility function to print Sudoku  */
 void Show(int Sudoku[Size][Size])
 {
+	cout << "*****\t SOLUTION \t *****\n";
+
 	for (int row = 0; row < Size; row++)
 	{
 		if (row == 3 || row == 6 ) {
@@ -149,6 +152,35 @@ void Show(int Sudoku[Size][Size])
 }
 
 
+void ShowInput(int Sudoku[Size][Size],int a, int b)
+{
+	for (int row = 0; row < Size; row++)
+	{
+		if (row == 3 || row == 6) {
+			printf("\n");
+		}
+		for (int col = 0; col < Size; col++) {
+
+			if (col == 3 || col == 6) {
+				printf("\t");
+			}
+
+			if (row == a && col == b) {
+				//Painting red to selected value
+				cout << red;
+				printf("%2d", Sudoku[row][col]);
+				//resetting color (default is white
+				cout << white;
+			}
+			else {
+			printf("%2d", Sudoku[row][col]);
+			}
+		}
+		printf("\n");
+
+	}
+}
+
 int main()
 {
 	// 0 represents empty location
@@ -164,7 +196,51 @@ int main()
 								{ 0, 7, 3,	 5, 0, 9,	0, 0, 1 },
 								{ 4, 0, 0,	 0, 0, 0,	6, 7, 9 }	
 							};
+	int a[9][9] = { 0 };
 
+	for (int i = 0; i < Size; i++) {
+		for (int j = 0; j < Size; j++) {
+			int temp = a[i][j];
+			
+			cout << "If you are done with entering  puzzle enter -1\n";
+			cout << "for mis-entered number and fixing that position enter -2\n";
+			cout << "Enter " << i + 1 << ".Row " << j + 1 << ".Column of sudoku\n";
+			ShowInput(a,i,j);
+			cin >> temp;
+
+			if (temp > 9 || temp < -1) {
+				cout << "******** \t Enter a valid number \t ********* \n";
+					j--;
+				continue;
+			}
+			if (temp == -1) {
+
+				if (SolveSudoku(a) == true)
+					Show(a);
+					
+				else
+				printf("Solution is not possible check it again");
+				system("PAUSE");
+					}
+			else {
+
+				a[i][j] = temp;
+			}
+
+			system("cls");
+		}
+	}
+
+	if (SolveSudoku(a) == true){
+		Show(a);
+	}
+	else{
+	printf("Solution is not possible check it again");
+	}
+	system("PAUSE");
+
+
+	/*
 	printf("\nProblem:\n");
 	Show(Sudoku);
 	printf("\n Solution: \n");
@@ -172,10 +248,9 @@ int main()
 		Show(Sudoku);
 	else
 		printf("Solution is not possible check it again");
-		system("PAUSE");
+		system("PAUSE");*/
 	return 0;
 	
 	
 }
-
 
